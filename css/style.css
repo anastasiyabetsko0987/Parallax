@@ -13,10 +13,6 @@ a{
   color: inherit;
 }
 
-h1{
-  font-family: "Gravitas One", serif;
-}
-
 body{
   font-family: "Prompt", sans-serif;
   color: #fff;
@@ -40,10 +36,6 @@ body{
   gap: 60px;
 }
 
-.top{
-  height: 500vh; /*нужна высота для скролла, обязательно */
-}
-
 .top__layer{
   width: 100vw;
   height: 100vh;
@@ -52,9 +44,23 @@ body{
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  animation-timing-function: linear;
-  animation-timeline: scroll();
-  /* animation-duration: 5s; если не работает предыдущая строка */
+  display: flex; /*все 4-ре строки для текста, иначе он не появится */
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+@supports(animation-timeline: scroll()){
+  .top{
+    height: 500vh; /*нужна высота для скролла, обязательно */
+  }
+  .top__layer{
+    animation-timeline: scroll();
+    animation-timing-function: linear;
+    /*animation-duration: 10s; если не работает предыдущая строка */
+    animation-fill-mode: both;
+    animation-range: 0 500vh;
+  }
 }
 
 .top__layer--5{
@@ -93,7 +99,7 @@ body{
 
 @keyframes top-layer-2{
   to{
-    scale: 3;
+    scale: 2;
   }
 }
 
@@ -107,3 +113,85 @@ body{
   }
 }
 
+.top__text{
+  font-family: "Gravitas One", serif;
+  position: relative;
+  z-index: 1;
+  animation-name: text;
+  opacity: 0;
+  animation-timeline: scroll();
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  animation-range: 150vh 350vh;
+}
+
+@keyframes text{
+  to{
+    opacity: 1;
+  }
+}
+
+.title{
+  font-size: 120px;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.text{
+  font-size: 24px;
+}
+
+.arrows-box{
+  border: 1px solid #fff;
+  background-color: rgba(30, 30, 30, .7);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 50px;
+}
+
+.arrows{
+  width: 10px;
+  height: 10px;
+  position: relative;
+  margin: 23px auto 0;
+}
+
+.arrows::after,
+.arrows::before{
+  content: '';
+  position: absolute;
+  border-bottom: 2px solid #fff;
+  border-left: 2px solid #fff;
+  width: 100%;
+  height: 100%;
+  animation: arrow 3s linear infinite;
+}
+
+.arrows::after{
+  animation: arrow 3s linear infinite -1.5s;
+}
+
+@keyframes arrow{
+  0%{
+    opacity: 0;
+    transform: translate(0, -10px) rotate(-45deg);
+  }
+  10%,
+  90%{
+    opacity: 0;
+  }
+  50%{
+    opacity: 1;
+    transform: translate(0, 0) rotate(-45deg);
+  }
+  100%{
+    opacity: 0;
+    transform: translate(0, 10px) rotate(-45deg);
+  }
+}
